@@ -1,1 +1,85 @@
-Map
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Calf Canyon Truck Trail</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+<script src='calfcyn.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+var map = L.mapbox.map('map', 'slugis.g8ne0hp0', {
+  closePopupOnClick:false
+}).setView([35.43, -120.53], 14);
+
+// Generate a GeoJSON line. You could also load GeoJSON via AJAX
+// or generate it some other way.
+
+function style(feature) {
+  return {
+    weight: 7,
+    opacity: 1,
+    color: '#0d8709',
+    opacity: 0.7
+  };
+}
+
+var line = L.geoJson(calf, {
+  style: style
+}).addTo(map);
+
+var marker = L.marker([0, 0], {
+  icon: L.mapbox.marker.icon({
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-120.55,35.41]
+    },
+    properties: {
+      'marker-symbol': 'star'
+    }
+  })
+}).addTo(map);
+
+// a shortcut to accessing the line's coordinate list
+var coords = calf.features[0].geometry.coordinates,
+    i = 0;
+
+function tick() {
+  marker.setLatLng([coords[i][1], coords[i][0]]);
+
+  // ensure the marker doesn't fall off the end of 
+  // the list of coordinates.
+  // 18ms is the time interval between points
+  if (++i < coords.length) setTimeout(tick, 100);
+}
+
+// start the animation
+tick();
+
+marker.bindPopup('<iframe src="https://player.vimeo.com/video/101482155?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" width="200" height="150" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>', {
+  keepInView: false,
+  autoPan: false,
+  closeButton: false,
+  maxWidth: 1000
+}).openPopup();
+
+marker._popup.setLatLng = function(latlng) {
+  this._latlng = L.latLng(latlng);
+  this._updatePosition();
+  this._adjustPan();
+};
+
+</script>
+
+</body>
+</html>
