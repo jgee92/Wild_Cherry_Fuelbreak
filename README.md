@@ -1,4 +1,4 @@
-mymap
+Video Map
 =====
 
 Map
