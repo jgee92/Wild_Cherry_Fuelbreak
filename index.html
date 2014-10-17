@@ -19,7 +19,7 @@
 <script>
 var map = L.mapbox.map('map', 'jgee92.jpn1mkb5', {
   closePopupOnClick:false
-}).setView([35.373, -120.665], 14);
+}).setView([35.381, -120.674], 13);
 
 // Generate a GeoJSON line. You could also load GeoJSON via AJAX
 // or generate it some other way.
@@ -60,7 +60,7 @@ function tick() {
   // ensure the marker doesn't fall off the end of 
   // the list of coordinates.
   // 18ms is the time interval between points
-  if (++i < coords.length) setTimeout(tick, 530);
+  if (++i < coords.length) setTimeout(tick, 518);
 }
 
 // start the animation
